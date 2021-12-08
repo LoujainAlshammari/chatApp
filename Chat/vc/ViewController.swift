@@ -10,7 +10,7 @@ import Firebase
 
 class ViewController: UIViewController {
 let fireStoryURL = Firestore.firestore()
-    var arrUser:[User] = []
+var arrUser:[User] = []
 
     @IBOutlet weak var nameText: UITextField!
     override func viewDidLoad() {

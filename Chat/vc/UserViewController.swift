@@ -9,11 +9,11 @@ import UIKit
 import Firebase
 
 class UserViewController: UIViewController{
-    
-    var arrUser:[Users] = []
     let fireStoryURL = Firestore.firestore()
+    var arrUser:[Users] = []
     var sendIDUser:String?
     var sendName:String?
+    //textField
     var nameUser:String?
     
   
@@ -26,8 +26,8 @@ class UserViewController: UIViewController{
     }
     
     func getUsersFromfirestore(){
-        fireStoryURL.collection("Users").getDocuments { SnapSot , error in
-            for user in SnapSot!.documents{
+        fireStoryURL.collection("Users").getDocuments { SnapShot , error in
+            for user in SnapShot!.documents{
                 print("=====")
                 print(user.data())
                 
@@ -35,9 +35,10 @@ class UserViewController: UIViewController{
                 //                let name: String = user.get("Name") as! String
                 //                let id: String = user.get("ID") as! String
                 //                self.arrUser.append(Users(name: name, id: id))
-                
+                if Auth.auth().currentUser?.uid != user.get("ID")as!String{
                 //2
                 self.arrUser.append(Users(name:user.get("Name") as! String, id: user.get("ID") as! String))
+            }
             }
             self.tabelView.reloadData()
         }
@@ -67,6 +68,13 @@ extension UserViewController:UITableViewDelegate,UITableViewDataSource{
         
     }
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+//        let vc = storyboard?.instantiateViewController(withIdentifier: "moveChat") as! ChatViewController
+//        vc.userName = arrUsear[indexPath.row].name!
+//        vc.userId = arrUsear[indexPath.row].id!
+//        print("========" , arrUsear[indexPath.row].name! ," : ",arrUsear[indexPath.row].id!)
+//                vc.modalPresentationStyle = .fullScreen
+//                self.navigationController?.pushViewController(vc, animated: true)
+        
         sendName = arrUser[indexPath.row].name
         sendIDUser = arrUser[indexPath.row].id
         performSegue(withIdentifier: "moveChat", sender: self)
